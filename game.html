@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+  <title>Javascript Assignment</title>
+  <style>
+    canvas {
+      border:1px solid #d3d3d3;
+      background-color: #f1f1f1;
+    }
+ 
+    body {
+      padding: 60px;
+    }
+  </style>
+</head>
+ 
+<body>
+  <canvas id="mikekim" width="800px" height="500px"></canvas>
+  <script>
+    var canvas = document.querySelector("#mikekim");
+    var context = canvas.getContext("2d");
+    var canvasPos = getPosition(canvas);
+	var mouseX = 0;
+	var mouseY = 0;
+	var color = 'black'
+	var radius = 15;
+    function draw() {
+  		context.beginPath();
+  		context.arc(mouseX, mouseY, radius, 0, 2 * Math.PI, true);
+  		context.fillStyle = color;
+  		context.fill();
+
+  		requestAnimationFrame(draw);
+	}
+	
+ 	
+	canvas.addEventListener("mousemove", setMousePosition, false);
+	
+	function setMousePosition(e) {
+  		mouseX = e.clientX - canvasPos.x;
+  		mouseY = e.clientY - canvasPos.y;
+  	}
+	draw();
+	function getPosition(moving) {
+  	var startx = 0;
+  	var starty = 0;
+ 
+  	while (moving) {
+    	startx += (moving.offsetLeft - moving.scrollLeft + moving.clientLeft);
+    	starty += (moving.offsetTop - moving.scrollTop + moving.clientTop);
+    	moving = moving.offsetParent;
+  	}
+  	return {
+    	x: startx,
+    	y: starty
+  	};
+}      
+
+	window.addEventListener("keydown", keyPress, false);
+	function keyPress(e) {
+		switch(e.keyCode) {
+        	case 66: 
+            	color = 'blue'
+            	break;
+        	case 71:
+        		color = 'green'
+            	break;
+        	case 82:
+        		color = 'red'
+            	break;
+	        case 89:
+	        	color = 'yellow'
+	            break;
+	        case 38:
+	        	radius += 1;
+	            break;
+	        case 40:
+	        	radius -= 1;
+	            break;    
+	        case 32:
+	        	context.clearRect(0, 0, canvas.width, canvas.height);
+	            break;
+        }   
+    }
+		window.addEventListener("touchmove", function(event) {
+            updateDrawArea(event, "mobile");
+        });
+        function updateDrawArea(event, plat="desktop") {
+            canvasArea.frameNo += 1;
+            myDrawCursor.update(event, plat);
+        }
+        
+        function everyinterval(n) {
+            if ((canvasArea.frameNo / n) % 1 == 0) {return true;}
+            return false;
+        }
+	
+  </script>
+ 
+</body>
+ 
+</html>
